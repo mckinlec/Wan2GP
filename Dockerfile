@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04
+FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu22.04
 
 # Build arg for GPU architectures - specify which CUDA compute capabilities to compile for
 # Common values:
@@ -16,8 +16,8 @@ FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04
 #   Multiple: --build-arg CUDA_ARCHITECTURES="8.0;8.6;8.9"
 #
 # Note: Including 8.9 or 9.0 may cause compilation issues on some setups
-# Default includes 8.0 and 8.6 for broad Ampere compatibility
-ARG CUDA_ARCHITECTURES="8.0;8.6"
+# Default includes 8.0, 8.6, and 12.0 for broad compatibility including Blackwell
+ARG CUDA_ARCHITECTURES="8.0;8.6;12.0"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -38,9 +38,9 @@ RUN pip install --upgrade pip setuptools wheel
 # Install requirements if exists
 RUN pip install -r requirements.txt
 
-# Install PyTorch with CUDA support
-RUN pip install --extra-index-url https://download.pytorch.org/whl/cu124 \
-    torch==2.6.0+cu124 torchvision==0.21.0+cu124
+# Install PyTorch with CUDA support (CUDA 12.8 compatible)
+RUN pip install --extra-index-url https://download.pytorch.org/whl/cu128 \
+    torch==2.8.0+cu128 torchvision==0.23.0+cu128 torchaudio
 
 # Install SageAttention from git (patch GPU detection)
 ENV TORCH_CUDA_ARCH_LIST="${CUDA_ARCHITECTURES}"

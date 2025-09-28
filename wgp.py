@@ -1757,9 +1757,12 @@ attention_modes_supported = get_supported_attention_modes()
 args = _parse_args()
 
 gpu_major, gpu_minor = torch.cuda.get_device_capability(args.gpu if len(args.gpu) > 0 else None)
-if  gpu_major < 8:
-    print("Switching to FP16 models when possible as GPU architecture doesn't support optimed BF16 Kernels")
+if gpu_major < 8:
+    print("Switching to FP16 models when possible as GPU architecture doesn't support optimized BF16 Kernels")
     bfloat16_supported = False
+elif gpu_major >= 12:  # Blackwell (RTX Pro 6000, RTX 5090, etc.)
+    print(f"Detected Blackwell GPU architecture {gpu_major}.{gpu_minor} - BF16 optimizations enabled")
+    bfloat16_supported = True
 else:
     bfloat16_supported = True
 

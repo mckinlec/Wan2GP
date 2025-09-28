@@ -28,7 +28,7 @@ conda activate wan2gp
 
 ```shell
 # Install PyTorch 2.7.0 with CUDA 12.8
-pip install torch==2.7.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/test/cu128
+pip install torch==2.8.0+cu128 torchvision==0.23.0+cu128 torchaudio --index-url https://download.pytorch.org/whl/cu128
 ```
 
 ### Step 3: Install Dependencies

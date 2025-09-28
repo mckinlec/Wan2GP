@@ -35,6 +35,7 @@ map_gpu_to_arch() {
     case "$name" in
     *"RTX 50"* | *"5090"* | *"5080"* | *"5070"*) echo "12.0" ;;
     *"H100"* | *"H800"*) echo "9.0" ;;
+    *"RTX Pro 6000"*) echo "12.0" ;;
     *"RTX 40"* | *"4090"* | *"4080"* | *"4070"* | *"4060"*) echo "8.9" ;;
     *"RTX 30"* | *"3090"* | *"3080"* | *"3070"* | *"3060"*) echo "8.6" ;;
     *"A100"* | *"A800"* | *"A40"*) echo "8.0" ;;
@@ -70,8 +71,8 @@ map_gpu_to_profile() {
     # Profile 5: VerylowRAM_LowVRAM - 16GB+ RAM, 10GB+ VRAM (fail safe, slow but works)
 
     case "$name" in
-    # High-end data center GPUs with 24GB+ VRAM - Profile 1 (HighRAM_HighVRAM)
-    *"RTX 50"* | *"5090"* | *"A100"* | *"A800"* | *"H100"* | *"H800"*)
+    # High-end data center GPUs and Blackwell professional GPGs with 24GB+ VRAM - Profile 1 (HighRAM_HighVRAM)
+    *"RTX 50"* | *"5090"* | *"A100"* | *"A800"* | *"H100"* | *"H800"* | *"RTX Pro 6000"*)
         if [ "$vram_gb" -ge 24 ]; then
             echo "1" # HighRAM_HighVRAM - fastest for short videos
         else
@@ -121,11 +122,11 @@ if command -v nvidia-smi &>/dev/null; then
     DRIVER_VERSION=$(nvidia-smi --query-gpu=driver_version --format=csv,noheader,nounits | head -1)
     echo "✅ NVIDIA Driver: $DRIVER_VERSION"
     
-    # Quick CUDA 12.4 compatibility check
+    # Quick CUDA 12.8 compatibility check for Blackwell GPUs
     if [[ "$DRIVER_VERSION" =~ ^([0-9]+) ]]; then
         MAJOR=${BASH_REMATCH[1]}
-        if [ "$MAJOR" -lt 520 ]; then
-            echo "⚠️  Driver $DRIVER_VERSION may not support CUDA 12.4 (need 520+)"
+        if [ "$MAJOR" -lt 555 ]; then
+            echo "⚠️  Driver $DRIVER_VERSION may not support CUDA 12.8 for Blackwell GPUs (need 555+)"
         fi
     fi
 else
@@ -177,7 +178,7 @@ fi
 
 # Quick NVIDIA runtime test
 echo "🧪 Testing NVIDIA runtime..."
-if timeout 15s docker run --rm --gpus all --runtime=nvidia nvidia/cuda:12.4-runtime-ubuntu22.04 nvidia-smi >/dev/null 2>&1; then
+if timeout 15s docker run --rm --gpus all --runtime=nvidia nvidia/cuda:12.8-runtime-ubuntu22.04 nvidia-smi >/dev/null 2>&1; then
     echo "✅ NVIDIA runtime working"
 else
     echo "❌ NVIDIA runtime test failed - check driver/runtime compatibility"
