@@ -15,10 +15,10 @@ nvidia-smi
 
 # Install matching PyTorch version
 # For CUDA 12.4 (RTX 10XX-40XX)
-pip install torch==2.6.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/test/cu124
+pip install torch==2.8.0+cu128 torchvision==0.23.0+cu128 torchaudio --index-url https://download.pytorch.org/whl/cu128
 
 # For CUDA 12.8 (RTX 50XX)
-pip install torch==2.7.0 torchvision torchaudio --index-url https://download.pytorch.org/whl/test/cu128
+pip install torch==2.8.0+cu128 torchvision==0.23.0+cu128 torchaudio --index-url https://download.pytorch.org/whl/cu128
 ```
 
 #### Python Version Issues

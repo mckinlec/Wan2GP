@@ -50,6 +50,12 @@ try:
 except:
     SM90_ENABLED = False
 
+try:
+    from sageattention import _qattn_sm120
+    SM120_ENABLED = True
+except:
+    SM120_ENABLED = False
+
 from sageattention.quant import per_block_int8 as per_block_int8_cuda
 from sageattention.quant import per_warp_int8 as per_warp_int8_cuda
 from sageattention.quant import sub_mean
