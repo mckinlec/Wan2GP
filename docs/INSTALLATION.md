@@ -93,6 +93,7 @@ Choose a profile based on your hardware:
 
 - **Profile 3 (LowRAM_HighVRAM)**: Loads entire model in VRAM, requires 24GB VRAM for 8-bit quantized 14B model
 - **Profile 4 (LowRAM_LowVRAM)**: Default, loads model parts as needed, slower but lower VRAM requirement
+- **Profile 6 (UltraHighVRAM)**: Optimized for 96GB+ VRAM data center GPUs (H100/H800), loads 90% of models in VRAM for maximum performance
 
 ## Troubleshooting
 

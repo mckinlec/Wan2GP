@@ -68,11 +68,14 @@ map_gpu_to_profile() {
     # Profile 3: LowRAM_HighVRAM - 32GB+ RAM, 24GB+ VRAM (RTX 3090/4090 with limited RAM)
     # Profile 4: LowRAM_LowVRAM - 32GB+ RAM, 12GB+ VRAM (default, little VRAM or longer videos)
     # Profile 5: VerylowRAM_LowVRAM - 16GB+ RAM, 10GB+ VRAM (fail safe, slow but works)
+    # Profile 6: UltraHighVRAM - 96GB+ VRAM (optimized for data center GPUs like H100/H800)
 
     case "$name" in
-    # High-end data center GPUs with 24GB+ VRAM - Profile 1 (HighRAM_HighVRAM)
+    # High-end data center GPUs with 24GB+ VRAM - Profile 1 (HighRAM_HighVRAM) or Profile 6 (UltraHighVRAM)
     *"RTX 50"* | *"5090"* | *"A100"* | *"A800"* | *"H100"* | *"H800"*)
-        if [ "$vram_gb" -ge 24 ]; then
+        if [ "$vram_gb" -ge 96 ]; then
+            echo "6" # UltraHighVRAM - maximum performance for 96GB+ VRAM
+        elif [ "$vram_gb" -ge 24 ]; then
             echo "1" # HighRAM_HighVRAM - fastest for short videos
         else
             echo "2" # HighRAM_LowVRAM - most versatile

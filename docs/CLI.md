@@ -25,7 +25,7 @@ python wgp.py --vace-1-3B     # VACE ControlNet 1.3B model
 --quantize-transformer BOOL   # Enable/disable transformer quantization (default: True)
 --compile                     # Enable PyTorch compilation (requires Triton)
 --attention MODE              # Force attention mode: sdpa, flash, sage, sage2
---profile NUMBER              # Performance profile 1-5 (default: 4)
+--profile NUMBER              # Performance profile 1-6 (default: 4)
 --preload NUMBER              # Preload N MB of diffusion model in VRAM
 --fp16                        # Force fp16 instead of bf16 models
 --gpu DEVICE                  # Run on specific GPU device (e.g., "cuda:1")
@@ -37,6 +37,7 @@ python wgp.py --vace-1-3B     # VACE ControlNet 1.3B model
 - **Profile 3**: Load entire current model in VRAM (requires 24GB for 14B model)
 - **Profile 4**: Default and recommended, load model parts as needed, most flexible option
 - **Profile 5**: Minimum RAM usage
+- **Profile 6**: UltraHighVRAM - Optimized for 96GB+ VRAM data center GPUs (H100/H800), loads 90% of models in VRAM for maximum performance
 
 ### Memory Management
 ```bash
@@ -127,6 +128,9 @@ python wgp.py --lock-config --share
 ```bash
 # Maximum performance (requires high-end GPU)
 python wgp.py --compile --attention sage2 --profile 3 --preload 2000
+
+# Ultra high-end performance (requires 96GB+ VRAM like H100/H800)
+python wgp.py --compile --attention sage2 --profile 6 --preload 5000
 
 # Optimized for RTX 2080Ti
 python wgp.py --profile 4 --attention sdpa --teacache 2.0

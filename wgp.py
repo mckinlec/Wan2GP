@@ -2766,6 +2766,9 @@ def init_pipe(pipe, kwargs, override_profile):
         kwargs["budgets"] = budgets
     elif profile == 3:
         kwargs["budgets"] = { "*" : "70%" }
+    elif profile == 6:
+        # Profile 6: UltraHighVRAM - Load everything in VRAM with maximum budget
+        kwargs["budgets"] = { "*" : "90%" }
 
     if "transformer2" in pipe:
         if profile in [3,4]:
@@ -7254,7 +7257,8 @@ memory_profile_choices= [   ("Profile 1, HighRAM_HighVRAM: at least 64 GB of RAM
                             ("Profile 2, HighRAM_LowVRAM: at least 64 GB of RAM and 12 GB of VRAM, the most versatile profile with high RAM, better suited for RTX 3070/3080/4070/4080 or for RTX 3090 / RTX 4090 with large pictures batches or long videos", 2),
                             ("Profile 3, LowRAM_HighVRAM: at least 32 GB of RAM and 24 GB of VRAM, adapted for RTX 3090 / RTX 4090 with limited RAM for good speed short video",3),
                             ("Profile 4, LowRAM_LowVRAM (Recommended): at least 32 GB of RAM and 12 GB of VRAM, if you have little VRAM or want to generate longer videos",4),
-                            ("Profile 5, VerylowRAM_LowVRAM (Fail safe): at least 24 GB of RAM and 10 GB of VRAM, if you don't have much it won't be fast but maybe it will work",5)]
+                            ("Profile 5, VerylowRAM_LowVRAM (Fail safe): at least 24 GB of RAM and 10 GB of VRAM, if you don't have much it won't be fast but maybe it will work",5),
+                            ("Profile 6, UltraHighVRAM: at least 96 GB of VRAM, optimized for data center GPUs like H100/H800 with massive VRAM for maximum performance",6)]
 
 def detect_auto_save_form(state, evt:gr.SelectData):
     last_tab_id = state.get("last_tab_id", 0)
